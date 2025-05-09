@@ -207,6 +207,13 @@
 			</div>
 		</header>
 		<main>
+			{{if .FullyBooked}}
+			<div class="am-padding-small am-text-center" style="background-color: #fef4f6">
+				<p class="am-margin-remove am-text-large am-heading-small am-text-danger">
+					Mohon maaf, semua kamar penuh!
+				</p>
+			</div>
+			{{end}}
 			<section class="am-section am-padding-remove-vertical">
 				<div class="am-light am-width-1-1">
 					<div

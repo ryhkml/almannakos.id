@@ -20,8 +20,9 @@ type (
 		Secondary string
 	}
 	AlmnData struct {
-		Price   string
-		Contact AlmnContact
+		Price       string
+		Contact     AlmnContact
+		FullyBooked bool
 	}
 )
 
@@ -31,6 +32,7 @@ var Almn = AlmnData{
 		Main:      "+6281330566254",
 		Secondary: "+6282229335820",
 	},
+	FullyBooked: false,
 }
 
 var CSPHeaders = [][]string{
@@ -184,6 +186,7 @@ func main() {
 		return c.Render("index", fiber.Map{
 			"ContactMain":      Almn.Contact.Main,
 			"ContactSecondary": Almn.Contact.Secondary,
+			"FullyBooked":      Almn.FullyBooked,
 			"Price":            Almn.Price,
 		})
 	})
