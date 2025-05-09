@@ -1,0 +1,3 @@
+[submodule "3rdpartylibs/uikit"]
+	path = 3rdpartylibs/uikit
+	url = https://github.com/uikit/uikit.git

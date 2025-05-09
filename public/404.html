@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+	<head>
+		<base href="/" />
+		<title>Halaman {{.Path}} Tidak Ditemukan</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="robots" content="noindex, follow" />
+		<link rel="icon" type="image/png" href="favicon.png" />
+		<link rel="apple-touch-icon" type="image/png" href="favicon.png" />
+		<link rel="stylesheet" href="css/style.css" />
+		<style>
+			.am-button {
+				border-radius: 5px;
+			}
+		</style>
+		<script src="js/script.js"></script>
+	</head>
+	<body>
+		<header
+			class="am-background-primary"
+			style="border-bottom: 1px solid #dddddd; padding: 5px 0"
+		></header>
+		<main
+			class="am-flex am-flex-center am-flex-middle am-text-center"
+			am-height-viewport="offset-top: true; offset-bottom: true"
+		>
+			<div class="am-container" style="margin-top: -300px">
+				<div am-margin="margin: am-margin-medium-top">
+					<div>
+						<img
+							src="assets/images/AL-MANNA_Logo_T.png"
+							alt="Logo AL-MANNA Kos"
+							width="300"
+							am-img
+						/>
+					</div>
+					<h2>
+						<b>HALAMAN <u>{{.Path}}</u> TIDAK DAPAT DITEMUKAN!</b>
+					</h2>
+					<div>
+						<a class="am-button am-button-secondary" href="/">
+							<b>KEMBALI</b>
+						</a>
+					</div>
+				</div>
+			</div>
+		</main>
+		<footer
+			class="am-background-secondary"
+			style="border-top: 1px solid #dddddd; padding: 5px 0"
+		></footer>
+		<script>
+			history.replaceState(null, "", window.location.pathname);
+		</script>
+	</body>
+</html>

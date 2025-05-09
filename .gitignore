@@ -1,0 +1,14 @@
+# Dirs
+dist
+public/**/*.gz
+
+# Env
+.env*
+
+# Note
+diff.txt
+note.txt
+
+# Bin
+almannakos-web
+*.sh

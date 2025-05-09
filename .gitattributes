@@ -1,0 +1,4 @@
+3rdpartylibs/** linguist-vendored
+
+public/css/*.css linguist-vendored
+public/js/*.js linguist-vendored
