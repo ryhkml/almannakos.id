@@ -38,8 +38,8 @@ var Almn = AlmnData{
 var CSPHeaders = [][]string{
 	{
 		"default-src 'none'",
-		"connect-src 'self' https://*.googleapis.com https://www.google.com https://*.gstatic.com data: blob:",
-		"script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://*.gstatic.com https://www.google.com https://*.ggpht.com https://*.googleusercontent.com blob:",
+		"connect-src 'self' https://www.google-analytics.com https://*.googleapis.com https://www.google.com https://*.gstatic.com data: blob:",
+		"script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://maps.googleapis.com https://*.gstatic.com https://www.google.com https://*.ggpht.com https://*.googleusercontent.com blob:",
 		"child-src 'self' blob:",
 		"frame-src https://www.google.com",
 		"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
@@ -54,8 +54,8 @@ var CSPHeaders = [][]string{
 	},
 	{
 		"default-src 'none'",
-		"connect-src 'self' data: blob:",
-		"script-src 'self' 'unsafe-inline' blob:",
+		"connect-src 'self' https://www.google-analytics.com data: blob:",
+		"script-src 'self' 'unsafe-inline' https://www.googletagmanager.com blob:",
 		"child-src 'self' blob:",
 		"frame-src 'none'",
 		"style-src 'self' 'unsafe-inline'",
