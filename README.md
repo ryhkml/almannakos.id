@@ -8,7 +8,7 @@ Kode sumber almmanakos.id dalam repositori ini hanya untuk tujuan demonstrasi, p
 
 ## Kontribusi
 
-Repositori almannakos.id tidak menerima kontributor, _pull request_, atau modifikasi dari pihak luar. Pengembangan website ditangani secara internal.
+Repositori almannakos.id tidak menerima kontributor, _pull request_, atau modifikasi dari pihak eksternal. Pengembangan website ditangani secara internal.
 
 ## Kontak
 
