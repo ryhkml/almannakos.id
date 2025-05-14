@@ -1,6 +1,7 @@
 # Dirs
 dist
 public/**/*.gz
+tmp
 
 # Env
 .env*
