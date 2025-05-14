@@ -217,18 +217,39 @@
 			</div>
 		</header>
 		<main>
-			{{if .FullyBooked}}
-			<div class="am-padding-small am-text-center" style="background-color: #fef4f6">
-				<p class="am-margin-remove am-text-large am-heading-small am-text-danger">
-					Mohon maaf, semua kamar penuh!
-				</p>
+			<div style="background-color: #fef4f6">
+				{{if .FullyBooked}}
+				<div class="am-container am-container-large">
+					<div class="am-padding-small am-text-center">
+						<p class="am-margin-remove am-text-large am-text-danger">
+							Mohon maaf, semua kamar penuh!
+						</p>
+					</div>
+				</div>
+				<hr style="margin: 0" />
+				{{end}}
+				<div class="am-container am-container-large">
+					<div class="am-padding-small am-text-center">
+						<h3 class="am-margin-remove">
+							<b>PERHATIAN!</b>
+						</h3>
+						<p class="am-margin-remove am-text-danger">
+							Transaksi resmi <b>HANYA</b> akan diproses setelah calon penyewa
+							menghubungi kami melalui kontak resmi (tercantum di website ini) dan
+							<b>WAJIB</b> melakukan survei langsung ke lokasi kos. Kami
+							<b>TIDAK</b> meminta uang muka atau pembayaran dalam bentuk apapun
+							sebelum survei dilakukan dan adanya kesepakatan bersama. Mohon waspadai
+							pihak manapun yang mengatasnamakan kami dan meminta pembayaran ke nomor
+							rekening yang berbeda atau diubah secara mendadak
+						</p>
+					</div>
+				</div>
 			</div>
-			{{end}}
 			<section class="am-section am-padding-remove-vertical">
 				<div class="am-light am-width-1-1">
 					<div
 						class="am-background-center-center am-background-cover am-panel am-flex am-flex-center am-flex-middle"
-						am-height-viewport="offset-top: true"
+						am-height-viewport="offset-top: true;"
 						style="background-image: url(assets/images/AL-MANNA_Index.png)"
 					>
 						<div class="am-text-center" am-margin="margin: am-margin-top">
