@@ -67,6 +67,28 @@
 					-1px 1px 0 #000000,
 					1px 1px 0 #000000;
 			}
+			a.am-button.pulse {
+				align-items: center;
+				box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+				text-decoration: none;
+				animation: shadow-pulse 1s infinite;
+			}
+			a.am-button.pulse > .am-icon,
+			a.am-button.pulse > b {
+				position: relative;
+				z-index: 1;
+			}
+			@keyframes shadow-pulse {
+				0% {
+					box-shadow: 0 0 0 0px rgba(255, 255, 255, 0);
+				}
+				50% {
+					box-shadow: 0 0 2.5px 5px rgba(37, 211, 102, 0.35);
+				}
+				100% {
+					box-shadow: 0 0 0 0px rgba(255, 255, 255, 0);
+				}
+			}
 		</style>
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-5SZB2TQKNR"></script>
 		<script>
@@ -295,11 +317,11 @@
 							>
 								<div class="am-width-auto@s">
 									<a
-										class="am-button am-button-default am-box-shadow-small am-flex am-flex-center am-flex-middle"
+										class="am-button am-button-default am-box-shadow-small am-flex am-flex-center am-flex-middle pulse"
 										href="https://wa.me/{{.ContactMain}}"
 										target="_blank"
 										rel="noopener noreferrer"
-										title="Buka WhatsApp"
+										title="Kirim pesan WhatsApp ke {{.ContactMain}}"
 									>
 										<span
 											class="am-icon"
@@ -314,11 +336,11 @@
 								</div>
 								<div class="am-width-auto@s">
 									<a
-										class="am-button am-button-default am-box-shadow-small am-flex am-flex-center am-flex-middle"
+										class="am-button am-button-default am-box-shadow-small am-flex am-flex-center am-flex-middle pulse"
 										href="https://wa.me/{{.ContactSecondary}}"
 										target="_blank"
 										rel="noopener noreferrer"
-										title="Buka WhatsApp"
+										title="Kirim pesan WhatsApp ke {{.ContactSecondary}}"
 									>
 										<span
 											class="am-icon"

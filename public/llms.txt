@@ -1,0 +1,29 @@
+# Website Kos Putri AL-MANNA
+
+> Website kos putri AL-MANNA (almannakos.id) dirancang untuk mempromosikan kos putri AL-MANNA, sebuah rumah kos khusus wanita di Malang, Indonesia. Website ini menyediakan informasi seperti lokasi, harga terkini, fasilitas yang tersedia, dan peraturan khusus untuk penyewa. Website ini menargetkan mahasiswi atau karyawati, menawarkan hunian yang nyaman, aman, dan berlokasi strategis dengan fasilitas lengkap.
+
+## Catatan Penting
+
+- Kebijakan Transaksi: Transaksi resmi **HANYA** akan diproses setelah calon penyewa menghubungi kami melalui kontak resmi (tercantum di website) dan **WAJIB** melakukan survei langsung ke lokasi kos. AL-MANNA **TIDAK** meminta uang muka atau pembayaran dalam bentuk apapun sebelum survei dilakukan dan adanya kesepakatan bersama. (Terlihat di [index.html](https://almannakos.id))
+
+## Informasi Kunci dan Struktur Situs
+
+- URL Website: [https://almannakos.id](https://almannakos.id)
+- Lokasi: Dari `index.html` dan peta/JSON-LD yang tersemat
+    - Alamat: Jl. Joyo Agung Perumahan Graha Dewata Blok CC 1-2 Dau Kabupaten Malang, Jawa Timur 65151, Indonesia.
+    - Tautan Google Maps: [maps.app.goo.gl/4U4DS6XmWybejqWy5](https://maps.app.goo.gl/4U4DS6XmWybejqWy5) (Tersemat di [index.html](https://almannakos.id))
+- Kontak: (Dari `index.html`)
+    - Utama: `+6281330566254` (WhatsApp: [wa.me/6281330566254](https://wa.me/6281330566254))
+    - Kedua: `+6282229335820` (WhatsApp: [wa.me/6282229335820](https://wa.me/6282229335820))
+- Harga: Ditampilkan Rp1.400.000/bulan. Terlihat di beranda dan galeri.
+- Fasilitas: Daftar detail dan gambar di [gallery.html](https://almannakos.id/gallery)
+    - Kamar: AC, kamar mandi dalam (shower, water heater), tempat tidur single, lemari pakaian & cermin, meja, dan kursi.
+    - Umum/Bersama: WiFi, CCTV, parkir sepeda motor, parkir mobil, dapur bersama (kompor & kulkas), mesin cuci, ruang bersama, dan rooftop.
+- Halaman Website: Struktur dari direktori
+    - Beranda (`/`): Ringkasan, informasi (harga, ketersediaan), peta lokasi, kontak. ([index.html](https://almannakos.id))
+    - Galeri (`/gallery`): Galeri foto, denah, daftar fasilitas, harga. ([gallery.html](https://almannakos.id/gallery))
+    - Peraturan (`/rules`): Peraturan dan tata tertib kos. (dari teks di `rules.html`). ([rules.html](https://almannakos.id/rules))
+    - Kebijakan Privasi (`/privacy-policy`): Pengumpulan data, penggunaan, cookie. (dari teks di `privacy-policy.html`). ([privacy-policy.html](https://almannakos.id/privacy-policy))
+- SEO dan Perayapan:
+    - `robots.txt`: [almannakos.id/robots.txt](https://almannakos.id/robots.txt)
+    - `sitemap.xml`: [almannakos.id/sitemap.xml](https://almannakos.id/sitemap.xml) (Termasuk tanggal `lastmod`)

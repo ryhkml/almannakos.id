@@ -169,6 +169,7 @@ func main() {
 	staticConfig := fiber.Static{
 		Compress:  true,
 		ByteRange: true,
+		MaxAge:    3600,
 	}
 	app.Static("/assets", "./public/assets", staticConfig)
 	app.Static("/css", "./public/css", staticConfig)
@@ -178,6 +179,7 @@ func main() {
 	app.Get("/favicon.png", serveStaticFile("./public/favicon.png"))
 
 	// SEO
+	app.Get("/llms.txt", serveStaticFile("./public/llms.txt", CacheControl404))
 	app.Get("/robots.txt", serveStaticFile("./public/robots.txt", CacheControl404))
 	app.Get("/sitemap.xml", serveStaticFile("./public/sitemap.xml", CacheControl404))
 
@@ -206,6 +208,6 @@ func main() {
 	if port == "" || port == "0" {
 		port = "9100"
 	}
-	addr := fmt.Sprintf("%s:%s", "127.0.0.1", port)
+	addr := fmt.Sprintf("127.0.0.1:%s", port)
 	log.Fatal(app.Listen(addr))
 }
