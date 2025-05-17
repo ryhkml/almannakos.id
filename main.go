@@ -95,9 +95,6 @@ func truncate(v string) string {
 
 func serveStaticFile(path string, cacheControlValue ...string) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		if _, err := os.Stat(path); os.IsNotExist(err) {
-			return fiber.ErrNotFound
-		}
 		if len(cacheControlValue) > 0 && cacheControlValue[0] != "" {
 			c.Set(fiber.HeaderCacheControl, cacheControlValue[0])
 		}
@@ -169,7 +166,6 @@ func main() {
 	staticConfig := fiber.Static{
 		Compress:  true,
 		ByteRange: true,
-		MaxAge:    3600,
 	}
 	app.Static("/assets", "./public/assets", staticConfig)
 	app.Static("/css", "./public/css", staticConfig)
