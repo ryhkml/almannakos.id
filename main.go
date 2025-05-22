@@ -27,7 +27,7 @@ type (
 )
 
 var Almn = AlmnData{
-	Price: "1.400.000",
+	Price: "1.200.000",
 	Contact: AlmnContact{
 		Main:      "+6281330566254",
 		Secondary: "+6282229335820",
