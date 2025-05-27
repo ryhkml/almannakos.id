@@ -15,7 +15,7 @@
 - Kontak: (Dari `index.html`)
     - Utama: `+6281330566254` (WhatsApp: [wa.me/6281330566254](https://wa.me/6281330566254))
     - Kedua: `+6282229335820` (WhatsApp: [wa.me/6282229335820](https://wa.me/6282229335820))
-- Harga: Ditampilkan Rp1.400.000/bulan. Terlihat di beranda dan galeri.
+- Harga: Ditampilkan Rp1.200.000/bulan. Terlihat di beranda dan galeri.
 - Fasilitas: Daftar detail dan gambar di [gallery.html](https://almannakos.id/gallery)
     - Kamar: AC, kamar mandi dalam (shower, water heater), tempat tidur single, lemari pakaian & cermin, meja, dan kursi.
     - Umum/Bersama: WiFi, CCTV, parkir sepeda motor, parkir mobil, dapur bersama (kompor & kulkas), mesin cuci, ruang bersama, dan rooftop.

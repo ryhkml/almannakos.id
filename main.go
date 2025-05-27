@@ -8,6 +8,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/csrf"
 	"github.com/gofiber/template/html/v2"
@@ -26,37 +27,29 @@ type (
 	}
 )
 
-var Almn = AlmnData{
-	Price: "1.200.000",
-	Contact: AlmnContact{
-		Main:      "+6281330566254",
-		Secondary: "+6282229335820",
-	},
-	FullyBooked: false,
-}
-
 var CSPHeaders = [][]string{
 	{
 		"default-src 'none'",
-		"connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://*.googleapis.com https://www.google.com https://*.gstatic.com data: blob:",
-		"script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://maps.googleapis.com https://*.gstatic.com https://www.google.com https://*.ggpht.com https://*.googleusercontent.com blob:",
-		"child-src 'self' blob:",
+		"connect-src 'self' data: https://www.google-analytics.com https://analytics.google.com https://*.googleapis.com https://www.google.com https://*.gstatic.com",
+		"script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://maps.googleapis.com https://*.gstatic.com https://www.google.com https://*.ggpht.com https://*.googleusercontent.com",
+		"child-src 'self'",
 		"frame-src https://www.google.com",
 		"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
 		"form-action 'none'",
-		"img-src 'self' https://maps.googleapis.com https://*.gstatic.com https://www.google.com https://*.googleusercontent.com data:",
+		"img-src 'self' data: https://maps.googleapis.com https://*.gstatic.com https://www.google.com https://*.googleusercontent.com",
 		"manifest-src 'self'",
-		"worker-src 'self' blob:",
+		"worker-src 'self'",
 		"base-uri 'self'",
 		"object-src 'none'",
 		"font-src https://fonts.gstatic.com",
 		"frame-ancestors 'self'",
+		"block-all-mixed-content;",
 	},
 	{
 		"default-src 'none'",
-		"connect-src 'self' https://www.google-analytics.com https://analytics.google.com data: blob:",
-		"script-src 'self' 'unsafe-inline' https://www.googletagmanager.com blob:",
-		"child-src 'self' blob:",
+		"connect-src 'self' data: https://www.google-analytics.com https://analytics.google.com",
+		"script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
+		"child-src 'self'",
 		"frame-src 'none'",
 		"style-src 'self' 'unsafe-inline'",
 		"form-action 'none'",
@@ -67,13 +60,9 @@ var CSPHeaders = [][]string{
 		"object-src 'none'",
 		"font-src 'none'",
 		"frame-ancestors 'self'",
+		"block-all-mixed-content;",
 	},
 }
-
-var (
-	CSPIndex   = strings.Join(CSPHeaders[0], "; ")
-	CSPDefault = strings.Join(CSPHeaders[1], "; ")
-)
 
 const (
 	CacheControlPublicLong = "public, max-age=604800, stale-while-revalidate=86400, immutable"
@@ -93,28 +82,80 @@ func truncate(v string) string {
 	return string(runes[:MAX_LEN])
 }
 
-func serveStaticFile(path string, cacheControlValue ...string) fiber.Handler {
+func containsAssets(path string) bool {
+	return strings.HasSuffix(path, ".ico") ||
+		strings.HasSuffix(path, ".jpeg") ||
+		strings.HasSuffix(path, ".jpg") ||
+		strings.HasSuffix(path, ".png") ||
+		strings.HasSuffix(path, ".svg")
+}
+
+func containsGEO(path string) bool {
+	return path == "/llms.txt"
+}
+
+func containsSEO(path string) bool {
+	return path == "/robots.txt" || path == "/sitemap.xml"
+}
+
+func containsCSS(path string) bool {
+	return strings.HasSuffix(path, ".css")
+}
+
+func containsJS(path string) bool {
+	return strings.HasSuffix(path, ".js")
+}
+
+func serveStaticFile(path string) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		if len(cacheControlValue) > 0 && cacheControlValue[0] != "" {
-			c.Set(fiber.HeaderCacheControl, cacheControlValue[0])
-		}
 		return c.SendFile(path)
 	}
 }
 
-func setViewHeaders(csp, xFrameOptions string) fiber.Handler {
+func headersProtection() fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		path := c.Path()
+		if containsAssets(path) {
+			c.Set(fiber.HeaderCacheControl, CacheControlPublicLong)
+			return c.Next()
+		}
+		if containsGEO(path) || containsSEO(path) {
+			c.Set(fiber.HeaderCacheControl, CacheControl404)
+			return c.Next()
+		}
 		c.Set(fiber.HeaderCacheControl, CacheControlPublicLong)
-		c.Set(fiber.HeaderContentSecurityPolicy, csp)
-		c.Set(fiber.HeaderXFrameOptions, xFrameOptions)
+		if containsCSS(path) {
+			c.Set(fiber.HeaderContentSecurityPolicy, "default-src 'none'; style-src 'self' 'unsafe-inline';")
+			return c.Next()
+		}
+		if containsJS(path) {
+			c.Set(fiber.HeaderContentSecurityPolicy, "default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline';")
+			return c.Next()
+		}
+		if path == "/" {
+			c.Set(fiber.HeaderContentSecurityPolicy, strings.Join(CSPHeaders[0], "; "))
+			c.Set(fiber.HeaderXFrameOptions, "SAMEORIGIN")
+			return c.Next()
+		}
+		c.Set(fiber.HeaderContentSecurityPolicy, strings.Join(CSPHeaders[1], "; "))
+		c.Set(fiber.HeaderXFrameOptions, "DENY")
 		return c.Next()
 	}
 }
 
 func main() {
+	// Data
+	almn := AlmnData{
+		Price: "1.200.000",
+		Contact: AlmnContact{
+			Main:      "+6281330566254",
+			Secondary: "+6282229335820",
+		},
+		FullyBooked: false,
+	}
+
 	// Template engine
 	engine := html.New("./public", ".html")
-
 	app := fiber.New(fiber.Config{
 		Views:     engine,
 		BodyLimit: 16 * 1024,
@@ -134,33 +175,40 @@ func main() {
 			c.Set(fiber.HeaderCacheControl, CacheControlNoStore)
 			return nil
 		},
+		JSONEncoder: json.Marshal,
+		JSONDecoder: json.Unmarshal,
 	})
 
 	if err := godotenv.Load(); err != nil {
 		fmt.Println("Cannot load .env file")
 	}
 
+	app.Use(headersProtection())
+
 	cookieSecure := os.Getenv("COOKIE_SECURE") == "1"
 	cookieName := "csrf_"
 	if cookieSecure {
 		cookieName = "__Secure-csrf_.X-Csrf-Token"
 	}
-	csrfConfig := csrf.New(csrf.Config{
-		KeyLookup:      "header:X-Csrf-Token",
-		SingleUseToken: true,
-		CookieSecure:   cookieSecure,
-		CookieName:     cookieName,
-		CookieHTTPOnly: true,
-		CookiePath:     "/",
-		CookieSameSite: "Strict",
-		ContextKey:     "Token",
+	csrfProtection := csrf.New(csrf.Config{
+		CookieSessionOnly: true,
+		CookieSecure:      cookieSecure,
+		CookieName:        cookieName,
+		CookieHTTPOnly:    true,
+		CookiePath:        "/",
+		ContextKey:        "Token",
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
 			c.Status(fiber.StatusForbidden)
 			c.Set(fiber.HeaderCacheControl, CacheControlNoStore)
 			return nil
 		},
+		Next: func(c *fiber.Ctx) bool {
+			path := c.Path()
+			return containsAssets(path) || containsGEO(path) || containsSEO(path) ||
+				containsCSS(path) || containsJS(path)
+		},
 	})
-	app.Use(csrfConfig)
+	app.Use(csrfProtection)
 
 	// Static files
 	staticConfig := fiber.Static{
@@ -175,28 +223,28 @@ func main() {
 	app.Get("/favicon.png", serveStaticFile("./public/favicon.png"))
 
 	// SEO
-	app.Get("/llms.txt", serveStaticFile("./public/llms.txt", CacheControl404))
-	app.Get("/robots.txt", serveStaticFile("./public/robots.txt", CacheControl404))
-	app.Get("/sitemap.xml", serveStaticFile("./public/sitemap.xml", CacheControl404))
+	app.Get("/llms.txt", serveStaticFile("./public/llms.txt"))
+	app.Get("/robots.txt", serveStaticFile("./public/robots.txt"))
+	app.Get("/sitemap.xml", serveStaticFile("./public/sitemap.xml"))
 
 	// Views
-	app.Get("/", setViewHeaders(CSPIndex, "SAMEORIGIN"), func(c *fiber.Ctx) error {
+	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Render("index", fiber.Map{
-			"ContactMain":      Almn.Contact.Main,
-			"ContactSecondary": Almn.Contact.Secondary,
-			"FullyBooked":      Almn.FullyBooked,
-			"Price":            Almn.Price,
+			"ContactMain":      almn.Contact.Main,
+			"ContactSecondary": almn.Contact.Secondary,
+			"FullyBooked":      almn.FullyBooked,
+			"Price":            almn.Price,
 		})
 	})
-	app.Get("/rules", setViewHeaders(CSPDefault, "DENY"), func(c *fiber.Ctx) error {
+	app.Get("/rules", func(c *fiber.Ctx) error {
 		return c.Render("rules", fiber.Map{})
 	})
-	app.Get("/gallery", setViewHeaders(CSPDefault, "DENY"), func(c *fiber.Ctx) error {
+	app.Get("/gallery", func(c *fiber.Ctx) error {
 		return c.Render("gallery", fiber.Map{
-			"Price": Almn.Price,
+			"Price": almn.Price,
 		})
 	})
-	app.Get("/privacy-policy", setViewHeaders(CSPDefault, "DENY"), func(c *fiber.Ctx) error {
+	app.Get("/privacy-policy", func(c *fiber.Ctx) error {
 		return c.Render("privacy-policy", fiber.Map{})
 	})
 
@@ -204,6 +252,5 @@ func main() {
 	if port == "" || port == "0" {
 		port = "9100"
 	}
-	addr := fmt.Sprintf("127.0.0.1:%s", port)
-	log.Fatal(app.Listen(addr))
+	log.Fatal(app.Listen(fmt.Sprintf("127.0.0.1:%s", port)))
 }
