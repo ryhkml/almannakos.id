@@ -43,7 +43,7 @@ var CSPHeaders = [][]string{
 		"object-src 'none'",
 		"font-src https://fonts.gstatic.com",
 		"frame-ancestors 'self'",
-		"block-all-mixed-content;",
+		"upgrade-insecure-requests;",
 	},
 	{
 		"default-src 'none'",
@@ -60,7 +60,7 @@ var CSPHeaders = [][]string{
 		"object-src 'none'",
 		"font-src 'none'",
 		"frame-ancestors 'self'",
-		"block-all-mixed-content;",
+		"upgrade-insecure-requests;",
 	},
 }
 
